@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Card from "./Card";
 
 const Body = () => {
   const [userName, setUserName] = useState("");
-  const [userData, setUserData] = useState("");
+  const [userData, setUserData] = useState([]);
 
   const fetchApiData = async (userName) => {
     try {
@@ -28,7 +29,7 @@ const Body = () => {
   };
 
   return (
-    <div className="bg-slate-300 flex justify-center ">
+    <div className="bg-slate-300 flex flex-col justify-center ">
       <form
         onSubmit={submitHandler}
         className="flex justify-center text-2xl my-11 py-4 gap-5"
@@ -48,6 +49,18 @@ const Body = () => {
           Search
         </button>
       </form>
+
+      <div className="flex flex-col">
+        {userData.map((instance) => (
+          <Card
+            type={instance.type}
+            created={instance.created_at}
+            repoName={instance.repo.name}
+            commitName={instance?.payload?.commits[0]?.message}
+            commitUrl={instance?.payload?.head}
+          />
+        ))}
+      </div>
     </div>
   );
 };
